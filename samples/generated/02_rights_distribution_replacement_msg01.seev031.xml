@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16">
+  <CorpActnNtfctn>
+    <NtfctnGnlInf>
+      <NtfctnId>SYN564RHD0002</NtfctnId>
+      <NtfctnTp>
+        <Cd>REPL</Cd>
+      </NtfctnTp>
+    </NtfctnGnlInf>
+    <CorpActnGnlInf>
+      <CorpActnEvtId>SYNCA2026RHD02</CorpActnEvtId>
+      <CorpActnEvtTp>
+        <Cd>RHDI</Cd>
+      </CorpActnEvtTp>
+      <MndtryVlntryEvtTp>
+        <Cd>VOLU</Cd>
+      </MndtryVlntryEvtTp>
+    </CorpActnGnlInf>
+    <CorpActnDtls>
+      <Dt>
+        <AnncmntDt>2026-10-05</AnncmntDt>
+        <PmtDt>2026-10-20</PmtDt>
+      </Dt>
+    </CorpActnDtls>
+    <FinInstrmId>
+      <ISIN>XX2345678906</ISIN>
+    </FinInstrmId>
+    <AcctsListAndBalDtls>
+      <Bal>
+        <ElgblBal>
+          <Qty>500</Qty>
+        </ElgblBal>
+      </Bal>
+      <SfkpgAcct>SYNACC000456</SfkpgAcct>
+    </AcctsListAndBalDtls>
+  </CorpActnNtfctn>
+</Document>

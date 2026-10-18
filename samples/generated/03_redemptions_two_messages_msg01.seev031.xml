@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16">
+  <CorpActnNtfctn>
+    <NtfctnGnlInf>
+      <NtfctnId>SYN564RED0001</NtfctnId>
+      <NtfctnTp>
+        <Cd>NEWM</Cd>
+      </NtfctnTp>
+    </NtfctnGnlInf>
+    <CorpActnGnlInf>
+      <CorpActnEvtId>SYNCA2026RED01</CorpActnEvtId>
+      <CorpActnEvtTp>
+        <Cd>REDM</Cd>
+      </CorpActnEvtTp>
+      <MndtryVlntryEvtTp>
+        <Cd>MAND</Cd>
+      </MndtryVlntryEvtTp>
+    </CorpActnGnlInf>
+    <CorpActnDtls>
+      <Dt>
+        <AnncmntDt>2026-09-15</AnncmntDt>
+        <RcrdDt>2026-10-01</RcrdDt>
+        <PmtDt>2026-11-01</PmtDt>
+      </Dt>
+      <CshPmt>
+        <Amt Ccy="USD">500000.00</Amt>
+      </CshPmt>
+    </CorpActnDtls>
+    <FinInstrmId>
+      <ISIN>XX3456789015</ISIN>
+    </FinInstrmId>
+    <AcctsListAndBalDtls>
+      <Bal>
+        <ElgblBal>
+          <Qty>100000</Qty>
+        </ElgblBal>
+      </Bal>
+      <SfkpgAcct>SYNACC000789</SfkpgAcct>
+    </AcctsListAndBalDtls>
+  </CorpActnNtfctn>
+</Document>

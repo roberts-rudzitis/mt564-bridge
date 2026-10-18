@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Toy schema for tests only. It requires an element the bridge never writes,
+     so every generated document is invalid. It does not describe seev.031. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16"
+           targetNamespace="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16"
+           elementFormDefault="qualified">
+  <xs:element name="Document">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Expected" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

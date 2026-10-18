@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16">
+  <CorpActnNtfctn>
+    <NtfctnGnlInf>
+      <NtfctnId>SYN564TND0001</NtfctnId>
+      <NtfctnTp>
+        <Cd>NEWM</Cd>
+      </NtfctnTp>
+    </NtfctnGnlInf>
+    <CorpActnGnlInf>
+      <CorpActnEvtId>SYNCA2026TND01</CorpActnEvtId>
+      <CorpActnEvtTp>
+        <Cd>TEND</Cd>
+      </CorpActnEvtTp>
+      <MndtryVlntryEvtTp>
+        <Cd>VOLU</Cd>
+      </MndtryVlntryEvtTp>
+    </CorpActnGnlInf>
+    <CorpActnDtls>
+      <Dt>
+        <AnncmntDt>2026-10-12</AnncmntDt>
+        <PmtDt>2026-11-20</PmtDt>
+      </Dt>
+      <CshPmt>
+        <Amt Ccy="EUR">12.50</Amt>
+      </CshPmt>
+    </CorpActnDtls>
+    <FinInstrmId>
+      <ISIN>XX5678901238</ISIN>
+    </FinInstrmId>
+    <AcctsListAndBalDtls>
+      <Bal>
+        <ElgblBal>
+          <Qty>750</Qty>
+        </ElgblBal>
+      </Bal>
+      <SfkpgAcct>SYNACC000321</SfkpgAcct>
+    </AcctsListAndBalDtls>
+  </CorpActnNtfctn>
+</Document>

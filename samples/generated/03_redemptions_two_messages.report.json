@@ -1,0 +1,207 @@
+{
+  "source_file": "samples/mt564/03_redemptions_two_messages.fin",
+  "schema_version": "seev.031.001.16",
+  "validated": false,
+  "file_error": null,
+  "messages": [
+    {
+      "message_index": 1,
+      "sender": "SYNTHBANKAXX",
+      "receiver": "SYNTHCUSTXXX",
+      "status": "written_unvalidated",
+      "output_file": "samples/generated/03_redemptions_two_messages_msg01.seev031.xml",
+      "error": null,
+      "mapped": [
+        {
+          "mt_field": "20C::SEME",
+          "line": 3,
+          "xml_path": "NtfctnGnlInf/NtfctnId",
+          "value": "SYN564RED0001",
+          "status": "partial"
+        },
+        {
+          "mt_field": "20C::CORP",
+          "line": 4,
+          "xml_path": "CorpActnGnlInf/CorpActnEvtId",
+          "value": "SYNCA2026RED01",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "23G",
+          "line": 5,
+          "xml_path": "NtfctnGnlInf/NtfctnTp/Cd",
+          "value": "NEWM",
+          "status": "partial"
+        },
+        {
+          "mt_field": "22F::CAEV",
+          "line": 6,
+          "xml_path": "CorpActnGnlInf/CorpActnEvtTp/Cd",
+          "value": "REDM",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "22F::CAMV",
+          "line": 7,
+          "xml_path": "CorpActnGnlInf/MndtryVlntryEvtTp/Cd",
+          "value": "MAND",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "98A::ANOU",
+          "line": 8,
+          "xml_path": "CorpActnDtls/Dt/AnncmntDt",
+          "value": "2026-09-15",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "98A::RDTE",
+          "line": 9,
+          "xml_path": "CorpActnDtls/Dt/RcrdDt",
+          "value": "2026-10-01",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "98A::PAYD",
+          "line": 10,
+          "xml_path": "CorpActnDtls/Dt/PmtDt",
+          "value": "2026-11-01",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "35B",
+          "line": 13,
+          "xml_path": "FinInstrmId/ISIN",
+          "value": "XX3456789015",
+          "status": "partial"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 21,
+          "xml_path": "AcctsListAndBalDtls/Bal/ElgblBal/Qty",
+          "value": "100000",
+          "status": "partial"
+        },
+        {
+          "mt_field": "97A::SAFE",
+          "line": 20,
+          "xml_path": "AcctsListAndBalDtls/SfkpgAcct",
+          "value": "SYNACC000789",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "19A::CASH",
+          "line": 17,
+          "xml_path": "CorpActnDtls/CshPmt/Amt",
+          "value": "500000.00",
+          "status": "partial"
+        }
+      ],
+      "dropped": [],
+      "warnings": [
+        "20C::SEME (line 3) is only partly mapped: Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified.",
+        "23G (line 5) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list.",
+        "35B (line 13) is only partly mapped: Only the ISIN is mapped. The security description on the following lines is dropped.",
+        "93B::ELIG (line 21) is only partly mapped: UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost.",
+        "19A::CASH (line 17) is only partly mapped: Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."
+      ],
+      "validation_errors": []
+    },
+    {
+      "message_index": 2,
+      "sender": "SYNTHBANKAXX",
+      "receiver": "SYNTHCUSTXXX",
+      "status": "written_unvalidated",
+      "output_file": "samples/generated/03_redemptions_two_messages_msg02.seev031.xml",
+      "error": null,
+      "mapped": [
+        {
+          "mt_field": "20C::SEME",
+          "line": 26,
+          "xml_path": "NtfctnGnlInf/NtfctnId",
+          "value": "SYN564PRD0002",
+          "status": "partial"
+        },
+        {
+          "mt_field": "20C::CORP",
+          "line": 27,
+          "xml_path": "CorpActnGnlInf/CorpActnEvtId",
+          "value": "SYNCA2026PRD02",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "23G",
+          "line": 28,
+          "xml_path": "NtfctnGnlInf/NtfctnTp/Cd",
+          "value": "NEWM",
+          "status": "partial"
+        },
+        {
+          "mt_field": "22F::CAEV",
+          "line": 29,
+          "xml_path": "CorpActnGnlInf/CorpActnEvtTp/Cd",
+          "value": "PRED",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "22F::CAMV",
+          "line": 30,
+          "xml_path": "CorpActnGnlInf/MndtryVlntryEvtTp/Cd",
+          "value": "MAND",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "98A::ANOU",
+          "line": 31,
+          "xml_path": "CorpActnDtls/Dt/AnncmntDt",
+          "value": "2026-09-15",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "98A::PAYD",
+          "line": 32,
+          "xml_path": "CorpActnDtls/Dt/PmtDt",
+          "value": "2026-11-01",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "35B",
+          "line": 35,
+          "xml_path": "FinInstrmId/ISIN",
+          "value": "XX4567890124",
+          "status": "partial"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 43,
+          "xml_path": "AcctsListAndBalDtls/Bal/ElgblBal/Qty",
+          "value": "50000",
+          "status": "partial"
+        },
+        {
+          "mt_field": "97A::SAFE",
+          "line": 42,
+          "xml_path": "AcctsListAndBalDtls/SfkpgAcct",
+          "value": "SYNACC000790",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "19A::CASH",
+          "line": 39,
+          "xml_path": "CorpActnDtls/CshPmt/Amt",
+          "value": "25000.00",
+          "status": "partial"
+        }
+      ],
+      "dropped": [],
+      "warnings": [
+        "20C::SEME (line 26) is only partly mapped: Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified.",
+        "23G (line 28) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list.",
+        "35B (line 35) is only partly mapped: Only the ISIN is mapped. The security description on the following lines is dropped.",
+        "93B::ELIG (line 43) is only partly mapped: UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost.",
+        "19A::CASH (line 39) is only partly mapped: Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."
+      ],
+      "validation_errors": []
+    }
+  ]
+}

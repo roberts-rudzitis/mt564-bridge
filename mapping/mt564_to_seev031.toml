@@ -1,0 +1,120 @@
+# MT564 to seev.031 mapping table, version 1.
+#
+# One [[rule]] per supported MT field. Fields without a rule are dropped and reported.
+#   source     MT field key: the tag, plus ::QUALIFIER when the field has one (e.g. 98A::PAYD)
+#   target     XML path below the root element. Every path is UNVERIFIED until checked
+#              against the official XSD for the configured version (see docs/mapping.md).
+#   transform  name of a function in src/mt564_bridge/transforms.py
+#   status     "mapped"  = clean equivalent of the same concept
+#              "partial" = equivalent with a known gap; a warning is written to the report
+#   required   true = the message is rejected when this field is missing
+#   note       the assumption or open question behind the row
+
+[[rule]]
+source = "20C::SEME"
+target = "NtfctnGnlInf/NtfctnId"
+transform = "plain"
+status = "partial"
+required = true
+note = "Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified."
+
+[[rule]]
+source = "20C::CORP"
+target = "CorpActnGnlInf/CorpActnEvtId"
+transform = "plain"
+status = "mapped"
+note = "Event reference assigned by the account servicer. Element path unverified."
+
+[[rule]]
+source = "23G"
+target = "NtfctnGnlInf/NtfctnTp/Cd"
+transform = "function"
+status = "partial"
+required = true
+note = "Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list."
+
+[[rule]]
+source = "22F::CAEV"
+target = "CorpActnGnlInf/CorpActnEvtTp/Cd"
+transform = "code"
+status = "mapped"
+required = true
+note = "Event type passed through as a four-letter code. Unknown codes are caught by XSD validation, not by this table."
+
+[[rule]]
+source = "22F::CAMV"
+target = "CorpActnGnlInf/MndtryVlntryEvtTp/Cd"
+transform = "code"
+status = "mapped"
+note = "Mandatory (MAND) or voluntary (VOLU) indicator."
+
+[[rule]]
+source = "98A::ANOU"
+target = "CorpActnDtls/Dt/AnncmntDt"
+transform = "date"
+status = "mapped"
+note = "Announcement date. YYYYMMDD becomes YYYY-MM-DD."
+
+[[rule]]
+source = "98A::RDTE"
+target = "CorpActnDtls/Dt/RcrdDt"
+transform = "date"
+status = "mapped"
+note = "Record date."
+
+[[rule]]
+source = "98A::EXDT"
+target = "CorpActnDtls/Dt/ExDvddDt"
+transform = "date"
+status = "partial"
+note = "ExDvddDt is the ex-dividend element. Ex-dates for other event types may need a different element."
+
+[[rule]]
+source = "98A::PAYD"
+target = "CorpActnDtls/Dt/PmtDt"
+transform = "date"
+status = "mapped"
+note = "Payment date."
+
+[[rule]]
+source = "35B"
+target = "FinInstrmId/ISIN"
+transform = "isin"
+status = "partial"
+required = true
+note = "Only the ISIN is mapped. The security description on the following lines is dropped."
+
+[[rule]]
+source = "93B::ELIG"
+target = "AcctsListAndBalDtls/Bal/ElgblBal/Qty"
+transform = "quantity"
+status = "partial"
+note = "UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost."
+
+[[rule]]
+source = "97A::SAFE"
+target = "AcctsListAndBalDtls/SfkpgAcct"
+transform = "plain"
+status = "mapped"
+note = "Safekeeping account. The element name SfkpgAcct appears in XSD fragments for older versions; parent nesting is unverified."
+
+[[rule]]
+source = "92A::GRSS"
+target = "CorpActnDtls/RateDtls/GrssRate"
+transform = "rate"
+status = "partial"
+note = "Gross rate. Whether it is a percentage or a per-unit amount depends on the event; check against the event type."
+
+[[rule]]
+source = "92A::NETT"
+target = "CorpActnDtls/RateDtls/NetRate"
+transform = "rate"
+status = "partial"
+note = "Net rate. Same basis question as the gross rate."
+
+[[rule]]
+source = "19A::CASH"
+target = "CorpActnDtls/CshPmt/Amt"
+transform = "amount"
+status = "partial"
+note = "Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."

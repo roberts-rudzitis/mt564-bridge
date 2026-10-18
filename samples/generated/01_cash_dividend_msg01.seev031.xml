@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:seev.031.001.16">
+  <CorpActnNtfctn>
+    <NtfctnGnlInf>
+      <NtfctnId>SYN564DIV0001</NtfctnId>
+      <NtfctnTp>
+        <Cd>NEWM</Cd>
+      </NtfctnTp>
+    </NtfctnGnlInf>
+    <CorpActnGnlInf>
+      <CorpActnEvtId>SYNCA2026DIV01</CorpActnEvtId>
+      <CorpActnEvtTp>
+        <Cd>DVCA</Cd>
+      </CorpActnEvtTp>
+      <MndtryVlntryEvtTp>
+        <Cd>MAND</Cd>
+      </MndtryVlntryEvtTp>
+    </CorpActnGnlInf>
+    <CorpActnDtls>
+      <Dt>
+        <AnncmntDt>2026-10-01</AnncmntDt>
+        <RcrdDt>2026-10-14</RcrdDt>
+        <ExDvddDt>2026-10-15</ExDvddDt>
+        <PmtDt>2026-11-05</PmtDt>
+      </Dt>
+      <RateDtls>
+        <GrssRate>0.25</GrssRate>
+      </RateDtls>
+      <CshPmt>
+        <Amt Ccy="EUR">1000.00</Amt>
+      </CshPmt>
+    </CorpActnDtls>
+    <FinInstrmId>
+      <ISIN>XX1234567897</ISIN>
+    </FinInstrmId>
+    <AcctsListAndBalDtls>
+      <Bal>
+        <ElgblBal>
+          <Qty>2000</Qty>
+        </ElgblBal>
+      </Bal>
+      <SfkpgAcct>SYNACC000123</SfkpgAcct>
+    </AcctsListAndBalDtls>
+  </CorpActnNtfctn>
+</Document>

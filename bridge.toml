@@ -1,0 +1,11 @@
+# Bridge configuration. Relative paths are resolved against this file's folder.
+
+[schema]
+# Target seev.031 release. The DTCC SR2026 notice lists seev.031.001.16 for SR2026.
+# Changing "version" also changes the XML namespace, so the XSD must match it.
+version = "seev.031.001.16"
+root_element = "CorpActnNtfctn"
+xsd = "schemas/seev.031.001.16.xsd"
+
+[mapping]
+file = "mapping/mt564_to_seev031.toml"
