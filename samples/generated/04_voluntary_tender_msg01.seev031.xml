@@ -3,38 +3,59 @@
   <CorpActnNtfctn>
     <NtfctnGnlInf>
       <NtfctnId>SYN564TND0001</NtfctnId>
-      <NtfctnTp>
-        <Cd>NEWM</Cd>
-      </NtfctnTp>
+      <NtfctnTp>NEWM</NtfctnTp>
+      <PrcgSts>
+        <Cd>
+          <EvtCmpltnsSts>INCO</EvtCmpltnsSts>
+          <EvtConfSts>UCON</EvtConfSts>
+        </Cd>
+      </PrcgSts>
     </NtfctnGnlInf>
     <CorpActnGnlInf>
       <CorpActnEvtId>SYNCA2026TND01</CorpActnEvtId>
-      <CorpActnEvtTp>
+      <EvtTp>
         <Cd>TEND</Cd>
-      </CorpActnEvtTp>
+      </EvtTp>
       <MndtryVlntryEvtTp>
         <Cd>VOLU</Cd>
       </MndtryVlntryEvtTp>
+      <UndrlygScty>
+        <FinInstrmId>
+          <ISIN>XX5678901238</ISIN>
+          <Desc>SYNTHETIC EQUITY EPSILON</Desc>
+        </FinInstrmId>
+      </UndrlygScty>
     </CorpActnGnlInf>
+    <AcctDtls>
+      <AcctsListAndBalDtls>
+        <SfkpgAcct>SYNACC000321</SfkpgAcct>
+        <Bal>
+          <TtlElgblBal>
+            <Bal>
+              <QtyChc>
+                <SgndQty>
+                  <ShrtLngPos>LONG</ShrtLngPos>
+                  <Qty>
+                    <Unit>750</Unit>
+                  </Qty>
+                </SgndQty>
+              </QtyChc>
+            </Bal>
+          </TtlElgblBal>
+        </Bal>
+      </AcctsListAndBalDtls>
+    </AcctDtls>
     <CorpActnDtls>
-      <Dt>
-        <AnncmntDt>2026-10-12</AnncmntDt>
-        <PmtDt>2026-11-20</PmtDt>
-      </Dt>
-      <CshPmt>
-        <Amt Ccy="EUR">12.50</Amt>
-      </CshPmt>
+      <DtDtls>
+        <AnncmntDt>
+          <Dt>
+            <Dt>2026-10-12</Dt>
+          </Dt>
+        </AnncmntDt>
+        <PmtDt>
+          <Dt>2026-11-20</Dt>
+        </PmtDt>
+      </DtDtls>
     </CorpActnDtls>
-    <FinInstrmId>
-      <ISIN>XX5678901238</ISIN>
-    </FinInstrmId>
-    <AcctsListAndBalDtls>
-      <Bal>
-        <ElgblBal>
-          <Qty>750</Qty>
-        </ElgblBal>
-      </Bal>
-      <SfkpgAcct>SYNACC000321</SfkpgAcct>
-    </AcctsListAndBalDtls>
   </CorpActnNtfctn>
 </Document>

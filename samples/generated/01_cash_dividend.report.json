@@ -1,14 +1,14 @@
 {
   "source_file": "samples/mt564/01_cash_dividend.fin",
   "schema_version": "seev.031.001.16",
-  "validated": false,
+  "validated": true,
   "file_error": null,
   "messages": [
     {
       "message_index": 1,
       "sender": "SYNTHBANKAXX",
       "receiver": "SYNTHCUSTXXX",
-      "status": "written_unvalidated",
+      "status": "converted",
       "output_file": "samples/generated/01_cash_dividend_msg01.seev031.xml",
       "error": null,
       "mapped": [
@@ -17,7 +17,28 @@
           "line": 3,
           "xml_path": "NtfctnGnlInf/NtfctnId",
           "value": "SYN564DIV0001",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "23G",
+          "line": 5,
+          "xml_path": "NtfctnGnlInf/NtfctnTp",
+          "value": "NEWM",
           "status": "partial"
+        },
+        {
+          "mt_field": "25D::PROC",
+          "line": 6,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtCmpltnsSts",
+          "value": "COMP",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "25D::PROC",
+          "line": 6,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtConfSts",
+          "value": "CONF",
+          "status": "mapped"
         },
         {
           "mt_field": "20C::CORP",
@@ -27,99 +48,100 @@
           "status": "mapped"
         },
         {
-          "mt_field": "23G",
-          "line": 5,
-          "xml_path": "NtfctnGnlInf/NtfctnTp/Cd",
-          "value": "NEWM",
-          "status": "partial"
-        },
-        {
           "mt_field": "22F::CAEV",
-          "line": 6,
-          "xml_path": "CorpActnGnlInf/CorpActnEvtTp/Cd",
+          "line": 7,
+          "xml_path": "CorpActnGnlInf/EvtTp/Cd",
           "value": "DVCA",
           "status": "mapped"
         },
         {
           "mt_field": "22F::CAMV",
-          "line": 7,
+          "line": 8,
           "xml_path": "CorpActnGnlInf/MndtryVlntryEvtTp/Cd",
           "value": "MAND",
           "status": "mapped"
         },
         {
+          "mt_field": "35B",
+          "line": 15,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/ISIN",
+          "value": "XX1234567897",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "35B",
+          "line": 15,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/Desc",
+          "value": "SYNTHETIC EQUITY ALPHA",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "97A::SAFE",
+          "line": 23,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/SfkpgAcct",
+          "value": "SYNACC000123",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 24,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/ShrtLngPos",
+          "value": "LONG",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 24,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/Unit",
+          "value": "2000",
+          "status": "mapped"
+        },
+        {
           "mt_field": "98A::ANOU",
-          "line": 8,
-          "xml_path": "CorpActnDtls/Dt/AnncmntDt",
+          "line": 9,
+          "xml_path": "CorpActnDtls/DtDtls/AnncmntDt/Dt/Dt",
           "value": "2026-10-01",
           "status": "mapped"
         },
         {
           "mt_field": "98A::RDTE",
-          "line": 9,
-          "xml_path": "CorpActnDtls/Dt/RcrdDt",
+          "line": 10,
+          "xml_path": "CorpActnDtls/DtDtls/RcrdDt/Dt",
           "value": "2026-10-14",
           "status": "mapped"
         },
         {
           "mt_field": "98A::EXDT",
-          "line": 10,
-          "xml_path": "CorpActnDtls/Dt/ExDvddDt",
+          "line": 11,
+          "xml_path": "CorpActnDtls/DtDtls/ExDvddDt/Dt",
           "value": "2026-10-15",
           "status": "partial"
         },
         {
           "mt_field": "98A::PAYD",
-          "line": 11,
-          "xml_path": "CorpActnDtls/Dt/PmtDt",
+          "line": 12,
+          "xml_path": "CorpActnDtls/DtDtls/PmtDt/Dt",
           "value": "2026-11-05",
           "status": "mapped"
-        },
-        {
-          "mt_field": "35B",
-          "line": 14,
-          "xml_path": "FinInstrmId/ISIN",
-          "value": "XX1234567897",
-          "status": "partial"
-        },
-        {
-          "mt_field": "93B::ELIG",
-          "line": 23,
-          "xml_path": "AcctsListAndBalDtls/Bal/ElgblBal/Qty",
-          "value": "2000",
-          "status": "partial"
-        },
-        {
-          "mt_field": "97A::SAFE",
-          "line": 22,
-          "xml_path": "AcctsListAndBalDtls/SfkpgAcct",
-          "value": "SYNACC000123",
-          "status": "mapped"
-        },
+        }
+      ],
+      "dropped": [
         {
           "mt_field": "92A::GRSS",
-          "line": 18,
-          "xml_path": "CorpActnDtls/RateDtls/GrssRate",
-          "value": "0.25",
-          "status": "partial"
+          "line": 19,
+          "value": "0,25",
+          "reason": "no rule in the mapping table (not supported in v1)"
         },
         {
           "mt_field": "19A::CASH",
-          "line": 19,
-          "xml_path": "CorpActnDtls/CshPmt/Amt",
-          "value": "1000.00",
-          "status": "partial"
+          "line": 20,
+          "value": "EUR1000,00",
+          "reason": "no rule in the mapping table (not supported in v1)"
         }
       ],
-      "dropped": [],
       "warnings": [
-        "20C::SEME (line 3) is only partly mapped: Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified.",
-        "23G (line 5) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list.",
-        "98A::EXDT (line 10) is only partly mapped: ExDvddDt is the ex-dividend element. Ex-dates for other event types may need a different element.",
-        "35B (line 14) is only partly mapped: Only the ISIN is mapped. The security description on the following lines is dropped.",
-        "93B::ELIG (line 23) is only partly mapped: UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost.",
-        "92A::GRSS (line 18) is only partly mapped: Gross rate. Whether it is a percentage or a per-unit amount depends on the event; check against the event type.",
-        "19A::CASH (line 19) is only partly mapped: Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."
+        "23G (line 5) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message.",
+        "98A::EXDT (line 11) is only partly mapped: ExDvddDt is the ex-dividend date. Ex-dates of other event types may need a different element."
       ],
       "validation_errors": []
     }

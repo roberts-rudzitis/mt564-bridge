@@ -3,38 +3,59 @@
   <CorpActnNtfctn>
     <NtfctnGnlInf>
       <NtfctnId>SYN564PRD0002</NtfctnId>
-      <NtfctnTp>
-        <Cd>NEWM</Cd>
-      </NtfctnTp>
+      <NtfctnTp>NEWM</NtfctnTp>
+      <PrcgSts>
+        <Cd>
+          <EvtCmpltnsSts>COMP</EvtCmpltnsSts>
+          <EvtConfSts>CONF</EvtConfSts>
+        </Cd>
+      </PrcgSts>
     </NtfctnGnlInf>
     <CorpActnGnlInf>
       <CorpActnEvtId>SYNCA2026PRD02</CorpActnEvtId>
-      <CorpActnEvtTp>
+      <EvtTp>
         <Cd>PRED</Cd>
-      </CorpActnEvtTp>
+      </EvtTp>
       <MndtryVlntryEvtTp>
         <Cd>MAND</Cd>
       </MndtryVlntryEvtTp>
+      <UndrlygScty>
+        <FinInstrmId>
+          <ISIN>XX4567890124</ISIN>
+          <Desc>SYNTHETIC BOND DELTA 2028</Desc>
+        </FinInstrmId>
+      </UndrlygScty>
     </CorpActnGnlInf>
+    <AcctDtls>
+      <AcctsListAndBalDtls>
+        <SfkpgAcct>SYNACC000790</SfkpgAcct>
+        <Bal>
+          <TtlElgblBal>
+            <Bal>
+              <QtyChc>
+                <SgndQty>
+                  <ShrtLngPos>LONG</ShrtLngPos>
+                  <Qty>
+                    <FaceAmt>50000</FaceAmt>
+                  </Qty>
+                </SgndQty>
+              </QtyChc>
+            </Bal>
+          </TtlElgblBal>
+        </Bal>
+      </AcctsListAndBalDtls>
+    </AcctDtls>
     <CorpActnDtls>
-      <Dt>
-        <AnncmntDt>2026-09-15</AnncmntDt>
-        <PmtDt>2026-11-01</PmtDt>
-      </Dt>
-      <CshPmt>
-        <Amt Ccy="USD">25000.00</Amt>
-      </CshPmt>
+      <DtDtls>
+        <AnncmntDt>
+          <Dt>
+            <Dt>2026-09-15</Dt>
+          </Dt>
+        </AnncmntDt>
+        <PmtDt>
+          <Dt>2026-11-01</Dt>
+        </PmtDt>
+      </DtDtls>
     </CorpActnDtls>
-    <FinInstrmId>
-      <ISIN>XX4567890124</ISIN>
-    </FinInstrmId>
-    <AcctsListAndBalDtls>
-      <Bal>
-        <ElgblBal>
-          <Qty>50000</Qty>
-        </ElgblBal>
-      </Bal>
-      <SfkpgAcct>SYNACC000790</SfkpgAcct>
-    </AcctsListAndBalDtls>
   </CorpActnNtfctn>
 </Document>

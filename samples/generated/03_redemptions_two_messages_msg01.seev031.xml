@@ -3,39 +3,62 @@
   <CorpActnNtfctn>
     <NtfctnGnlInf>
       <NtfctnId>SYN564RED0001</NtfctnId>
-      <NtfctnTp>
-        <Cd>NEWM</Cd>
-      </NtfctnTp>
+      <NtfctnTp>NEWM</NtfctnTp>
+      <PrcgSts>
+        <Cd>
+          <EvtCmpltnsSts>COMP</EvtCmpltnsSts>
+          <EvtConfSts>CONF</EvtConfSts>
+        </Cd>
+      </PrcgSts>
     </NtfctnGnlInf>
     <CorpActnGnlInf>
       <CorpActnEvtId>SYNCA2026RED01</CorpActnEvtId>
-      <CorpActnEvtTp>
+      <EvtTp>
         <Cd>REDM</Cd>
-      </CorpActnEvtTp>
+      </EvtTp>
       <MndtryVlntryEvtTp>
         <Cd>MAND</Cd>
       </MndtryVlntryEvtTp>
+      <UndrlygScty>
+        <FinInstrmId>
+          <ISIN>XX3456789015</ISIN>
+          <Desc>SYNTHETIC BOND GAMMA 2026</Desc>
+        </FinInstrmId>
+      </UndrlygScty>
     </CorpActnGnlInf>
+    <AcctDtls>
+      <AcctsListAndBalDtls>
+        <SfkpgAcct>SYNACC000789</SfkpgAcct>
+        <Bal>
+          <TtlElgblBal>
+            <Bal>
+              <QtyChc>
+                <SgndQty>
+                  <ShrtLngPos>LONG</ShrtLngPos>
+                  <Qty>
+                    <FaceAmt>100000</FaceAmt>
+                  </Qty>
+                </SgndQty>
+              </QtyChc>
+            </Bal>
+          </TtlElgblBal>
+        </Bal>
+      </AcctsListAndBalDtls>
+    </AcctDtls>
     <CorpActnDtls>
-      <Dt>
-        <AnncmntDt>2026-09-15</AnncmntDt>
-        <RcrdDt>2026-10-01</RcrdDt>
-        <PmtDt>2026-11-01</PmtDt>
-      </Dt>
-      <CshPmt>
-        <Amt Ccy="USD">500000.00</Amt>
-      </CshPmt>
+      <DtDtls>
+        <AnncmntDt>
+          <Dt>
+            <Dt>2026-09-15</Dt>
+          </Dt>
+        </AnncmntDt>
+        <RcrdDt>
+          <Dt>2026-10-01</Dt>
+        </RcrdDt>
+        <PmtDt>
+          <Dt>2026-11-01</Dt>
+        </PmtDt>
+      </DtDtls>
     </CorpActnDtls>
-    <FinInstrmId>
-      <ISIN>XX3456789015</ISIN>
-    </FinInstrmId>
-    <AcctsListAndBalDtls>
-      <Bal>
-        <ElgblBal>
-          <Qty>100000</Qty>
-        </ElgblBal>
-      </Bal>
-      <SfkpgAcct>SYNACC000789</SfkpgAcct>
-    </AcctsListAndBalDtls>
   </CorpActnNtfctn>
 </Document>

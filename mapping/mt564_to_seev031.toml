@@ -1,120 +1,151 @@
-# MT564 to seev.031 mapping table, version 1.
+# MT564 to seev.031.001.16 mapping table, version 2.
 #
-# One [[rule]] per supported MT field. Fields without a rule are dropped and reported.
+# One [[rule]] per target element. A source field may feed several rules (e.g. 25D::PROC).
+# Fields without a matching rule are dropped and reported.
 #   source     MT field key: the tag, plus ::QUALIFIER when the field has one (e.g. 98A::PAYD)
-#   target     XML path below the root element. Every path is UNVERIFIED until checked
-#              against the official XSD for the configured version (see docs/mapping.md).
+#   target     XML path below the root element. Paths and element order were checked against the
+#              official seev.031.001.16 XSD (validation passes for all samples).
 #   transform  name of a function in src/mt564_bridge/transforms.py
 #   status     "mapped"  = clean equivalent of the same concept
 #              "partial" = equivalent with a known gap; a warning is written to the report
 #   required   true = the message is rejected when this field is missing
 #   note       the assumption or open question behind the row
+#
+# Rule order is element order: the XML builder creates elements in the order of this table,
+# and the XSD requires NtfctnGnlInf, CorpActnGnlInf, AcctDtls, CorpActnDtls in that order.
+
+# --- Notification general information ------------------------------------------------------
 
 [[rule]]
 source = "20C::SEME"
 target = "NtfctnGnlInf/NtfctnId"
 transform = "plain"
+status = "mapped"
+required = true
+note = "Sender's reference. In a full ISO 20022 exchange it may also go in the business application header."
+
+[[rule]]
+source = "23G"
+target = "NtfctnGnlInf/NtfctnTp"
+transform = "function"
 status = "partial"
 required = true
-note = "Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified."
+note = "Only NEWM and REPL are supported in v1; any other function rejects the message."
+
+[[rule]]
+source = "25D::PROC"
+target = "NtfctnGnlInf/PrcgSts/Cd/EvtCmpltnsSts"
+transform = "processing_completeness"
+status = "mapped"
+required = true
+note = "COMP and COMU become COMP; PREC and PREU become INCO."
+
+[[rule]]
+source = "25D::PROC"
+target = "NtfctnGnlInf/PrcgSts/Cd/EvtConfSts"
+transform = "processing_confirmation"
+status = "mapped"
+required = true
+note = "COMP and PREC become CONF; COMU and PREU become UCON."
+
+# --- Corporate action general information --------------------------------------------------
 
 [[rule]]
 source = "20C::CORP"
 target = "CorpActnGnlInf/CorpActnEvtId"
 transform = "plain"
 status = "mapped"
-note = "Event reference assigned by the account servicer. Element path unverified."
-
-[[rule]]
-source = "23G"
-target = "NtfctnGnlInf/NtfctnTp/Cd"
-transform = "function"
-status = "partial"
 required = true
-note = "Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list."
+note = "Event reference assigned by the account servicer."
 
 [[rule]]
 source = "22F::CAEV"
-target = "CorpActnGnlInf/CorpActnEvtTp/Cd"
+target = "CorpActnGnlInf/EvtTp/Cd"
 transform = "code"
 status = "mapped"
 required = true
-note = "Event type passed through as a four-letter code. Unknown codes are caught by XSD validation, not by this table."
+note = "Event type passed through as a four-letter code. Unknown codes are caught by XSD validation."
 
 [[rule]]
 source = "22F::CAMV"
 target = "CorpActnGnlInf/MndtryVlntryEvtTp/Cd"
 transform = "code"
 status = "mapped"
-note = "Mandatory (MAND) or voluntary (VOLU) indicator."
+required = true
+note = "Mandatory (MAND), mandatory with options (CHOS) or voluntary (VOLU)."
+
+[[rule]]
+source = "35B"
+target = "CorpActnGnlInf/UndrlygScty/FinInstrmId/ISIN"
+transform = "isin"
+status = "mapped"
+required = true
+note = "ISIN from the first line of :35B:. The check digit is not verified."
+
+[[rule]]
+source = "35B"
+target = "CorpActnGnlInf/UndrlygScty/FinInstrmId/Desc"
+transform = "security_description"
+status = "mapped"
+note = "The description lines of :35B:, joined with spaces (max. 140 characters). Skipped when absent."
+
+# --- Account details -----------------------------------------------------------------------
+
+[[rule]]
+source = "97A::SAFE"
+target = "AcctDtls/AcctsListAndBalDtls/SfkpgAcct"
+transform = "plain"
+status = "mapped"
+required = true
+note = "Safekeeping account. 97C::SAFE//GENR (all accounts) is not supported in v1."
+
+[[rule]]
+source = "93B::ELIG"
+target = "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/ShrtLngPos"
+transform = "long_short"
+status = "mapped"
+note = "N after the slash (a short balance) becomes SHOR, otherwise LONG."
+
+[[rule]]
+source = "93B::ELIG"
+target = "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/Unit"
+transform = "units"
+status = "mapped"
+note = "UNIT/ balances. Skipped for face amounts."
+
+[[rule]]
+source = "93B::ELIG"
+target = "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/FaceAmt"
+transform = "face_amount"
+status = "mapped"
+note = "FAMT/ balances. Skipped for units."
+
+# --- Corporate action details: dates -------------------------------------------------------
 
 [[rule]]
 source = "98A::ANOU"
-target = "CorpActnDtls/Dt/AnncmntDt"
+target = "CorpActnDtls/DtDtls/AnncmntDt/Dt/Dt"
 transform = "date"
 status = "mapped"
 note = "Announcement date. YYYYMMDD becomes YYYY-MM-DD."
 
 [[rule]]
 source = "98A::RDTE"
-target = "CorpActnDtls/Dt/RcrdDt"
+target = "CorpActnDtls/DtDtls/RcrdDt/Dt"
 transform = "date"
 status = "mapped"
 note = "Record date."
 
 [[rule]]
 source = "98A::EXDT"
-target = "CorpActnDtls/Dt/ExDvddDt"
+target = "CorpActnDtls/DtDtls/ExDvddDt/Dt"
 transform = "date"
 status = "partial"
-note = "ExDvddDt is the ex-dividend element. Ex-dates for other event types may need a different element."
+note = "ExDvddDt is the ex-dividend date. Ex-dates of other event types may need a different element."
 
 [[rule]]
 source = "98A::PAYD"
-target = "CorpActnDtls/Dt/PmtDt"
+target = "CorpActnDtls/DtDtls/PmtDt/Dt"
 transform = "date"
 status = "mapped"
 note = "Payment date."
-
-[[rule]]
-source = "35B"
-target = "FinInstrmId/ISIN"
-transform = "isin"
-status = "partial"
-required = true
-note = "Only the ISIN is mapped. The security description on the following lines is dropped."
-
-[[rule]]
-source = "93B::ELIG"
-target = "AcctsListAndBalDtls/Bal/ElgblBal/Qty"
-transform = "quantity"
-status = "partial"
-note = "UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost."
-
-[[rule]]
-source = "97A::SAFE"
-target = "AcctsListAndBalDtls/SfkpgAcct"
-transform = "plain"
-status = "mapped"
-note = "Safekeeping account. The element name SfkpgAcct appears in XSD fragments for older versions; parent nesting is unverified."
-
-[[rule]]
-source = "92A::GRSS"
-target = "CorpActnDtls/RateDtls/GrssRate"
-transform = "rate"
-status = "partial"
-note = "Gross rate. Whether it is a percentage or a per-unit amount depends on the event; check against the event type."
-
-[[rule]]
-source = "92A::NETT"
-target = "CorpActnDtls/RateDtls/NetRate"
-transform = "rate"
-status = "partial"
-note = "Net rate. Same basis question as the gross rate."
-
-[[rule]]
-source = "19A::CASH"
-target = "CorpActnDtls/CshPmt/Amt"
-transform = "amount"
-status = "partial"
-note = "Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."

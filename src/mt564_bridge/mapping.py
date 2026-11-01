@@ -23,7 +23,7 @@ class Rule:
     """One row of the mapping table."""
 
     source: str              # MT key, e.g. "98A::PAYD"
-    target: str              # XML path below the root element, e.g. "CorpActnDtls/Dt/PmtDt"
+    target: str              # XML path below the root element, e.g. "CorpActnDtls/DtDtls/PmtDt/Dt"
     transform: str           # name of a function in transforms.TRANSFORMS
     status: str = "mapped"   # "mapped" or "partial"
     required: bool = False   # True: the message is rejected when the field is missing
@@ -65,10 +65,11 @@ def load_rules(path: Path) -> list[Rule]:
             raise ConfigError(f"rule {rule.source}: status must be one of {_STATUSES}")
         rules.append(rule)
 
-    for label, values in (("source", [r.source for r in rules]), ("target", [r.target for r in rules])):
-        duplicates = sorted({v for v in values if values.count(v) > 1})
-        if duplicates:
-            raise ConfigError(f"more than one rule has the same {label}: {duplicates}")
+    # One MT field may feed several ISO elements (e.g. 25D::PROC), but each element is written once.
+    targets = [r.target for r in rules]
+    duplicates = sorted({t for t in targets if targets.count(t) > 1})
+    if duplicates:
+        raise ConfigError(f"more than one rule has the same target: {duplicates}")
     return rules
 
 
@@ -85,14 +86,15 @@ def apply_mapping(message: MT564Message, rules: list[Rule]) -> MappingResult:
             continue
 
         chosen = matches[0]
-        if len(matches) > 1:
-            result.warnings.append(
-                f"{rule.source} appears {len(matches)} times; only line {chosen.line} is mapped"
-            )
+        warning = f"{rule.source} appears {len(matches)} times; only line {chosen.line} is mapped"
+        if len(matches) > 1 and warning not in result.warnings:
+            result.warnings.append(warning)
         try:
             value = TRANSFORMS[rule.transform](chosen.value)
         except ValueError as exc:
             raise MappingError(f"{rule.source}: {exc}", chosen.line) from exc
+        if value is None:  # the field does not apply to this target, e.g. UNIT for FaceAmt
+            continue
 
         used_lines.add(chosen.line)
         result.elements.append(MappedElement(rule, chosen, value))

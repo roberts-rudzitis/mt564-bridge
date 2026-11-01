@@ -1,14 +1,14 @@
 {
   "source_file": "samples/mt564/03_redemptions_two_messages.fin",
   "schema_version": "seev.031.001.16",
-  "validated": false,
+  "validated": true,
   "file_error": null,
   "messages": [
     {
       "message_index": 1,
       "sender": "SYNTHBANKAXX",
       "receiver": "SYNTHCUSTXXX",
-      "status": "written_unvalidated",
+      "status": "converted",
       "output_file": "samples/generated/03_redemptions_two_messages_msg01.seev031.xml",
       "error": null,
       "mapped": [
@@ -17,7 +17,28 @@
           "line": 3,
           "xml_path": "NtfctnGnlInf/NtfctnId",
           "value": "SYN564RED0001",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "23G",
+          "line": 5,
+          "xml_path": "NtfctnGnlInf/NtfctnTp",
+          "value": "NEWM",
           "status": "partial"
+        },
+        {
+          "mt_field": "25D::PROC",
+          "line": 6,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtCmpltnsSts",
+          "value": "COMP",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "25D::PROC",
+          "line": 6,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtConfSts",
+          "value": "CONF",
+          "status": "mapped"
         },
         {
           "mt_field": "20C::CORP",
@@ -27,83 +48,86 @@
           "status": "mapped"
         },
         {
-          "mt_field": "23G",
-          "line": 5,
-          "xml_path": "NtfctnGnlInf/NtfctnTp/Cd",
-          "value": "NEWM",
-          "status": "partial"
-        },
-        {
           "mt_field": "22F::CAEV",
-          "line": 6,
-          "xml_path": "CorpActnGnlInf/CorpActnEvtTp/Cd",
+          "line": 7,
+          "xml_path": "CorpActnGnlInf/EvtTp/Cd",
           "value": "REDM",
           "status": "mapped"
         },
         {
           "mt_field": "22F::CAMV",
-          "line": 7,
+          "line": 8,
           "xml_path": "CorpActnGnlInf/MndtryVlntryEvtTp/Cd",
           "value": "MAND",
           "status": "mapped"
         },
         {
+          "mt_field": "35B",
+          "line": 14,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/ISIN",
+          "value": "XX3456789015",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "35B",
+          "line": 14,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/Desc",
+          "value": "SYNTHETIC BOND GAMMA 2026",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "97A::SAFE",
+          "line": 21,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/SfkpgAcct",
+          "value": "SYNACC000789",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 22,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/ShrtLngPos",
+          "value": "LONG",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 22,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/FaceAmt",
+          "value": "100000",
+          "status": "mapped"
+        },
+        {
           "mt_field": "98A::ANOU",
-          "line": 8,
-          "xml_path": "CorpActnDtls/Dt/AnncmntDt",
+          "line": 9,
+          "xml_path": "CorpActnDtls/DtDtls/AnncmntDt/Dt/Dt",
           "value": "2026-09-15",
           "status": "mapped"
         },
         {
           "mt_field": "98A::RDTE",
-          "line": 9,
-          "xml_path": "CorpActnDtls/Dt/RcrdDt",
+          "line": 10,
+          "xml_path": "CorpActnDtls/DtDtls/RcrdDt/Dt",
           "value": "2026-10-01",
           "status": "mapped"
         },
         {
           "mt_field": "98A::PAYD",
-          "line": 10,
-          "xml_path": "CorpActnDtls/Dt/PmtDt",
+          "line": 11,
+          "xml_path": "CorpActnDtls/DtDtls/PmtDt/Dt",
           "value": "2026-11-01",
           "status": "mapped"
-        },
-        {
-          "mt_field": "35B",
-          "line": 13,
-          "xml_path": "FinInstrmId/ISIN",
-          "value": "XX3456789015",
-          "status": "partial"
-        },
-        {
-          "mt_field": "93B::ELIG",
-          "line": 21,
-          "xml_path": "AcctsListAndBalDtls/Bal/ElgblBal/Qty",
-          "value": "100000",
-          "status": "partial"
-        },
-        {
-          "mt_field": "97A::SAFE",
-          "line": 20,
-          "xml_path": "AcctsListAndBalDtls/SfkpgAcct",
-          "value": "SYNACC000789",
-          "status": "mapped"
-        },
-        {
-          "mt_field": "19A::CASH",
-          "line": 17,
-          "xml_path": "CorpActnDtls/CshPmt/Amt",
-          "value": "500000.00",
-          "status": "partial"
         }
       ],
-      "dropped": [],
+      "dropped": [
+        {
+          "mt_field": "19A::CASH",
+          "line": 18,
+          "value": "USD500000,00",
+          "reason": "no rule in the mapping table (not supported in v1)"
+        }
+      ],
       "warnings": [
-        "20C::SEME (line 3) is only partly mapped: Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified.",
-        "23G (line 5) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list.",
-        "35B (line 13) is only partly mapped: Only the ISIN is mapped. The security description on the following lines is dropped.",
-        "93B::ELIG (line 21) is only partly mapped: UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost.",
-        "19A::CASH (line 17) is only partly mapped: Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."
+        "23G (line 5) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message."
       ],
       "validation_errors": []
     },
@@ -111,95 +135,119 @@
       "message_index": 2,
       "sender": "SYNTHBANKAXX",
       "receiver": "SYNTHCUSTXXX",
-      "status": "written_unvalidated",
+      "status": "converted",
       "output_file": "samples/generated/03_redemptions_two_messages_msg02.seev031.xml",
       "error": null,
       "mapped": [
         {
           "mt_field": "20C::SEME",
-          "line": 26,
+          "line": 27,
           "xml_path": "NtfctnGnlInf/NtfctnId",
           "value": "SYN564PRD0002",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "23G",
+          "line": 29,
+          "xml_path": "NtfctnGnlInf/NtfctnTp",
+          "value": "NEWM",
           "status": "partial"
         },
         {
+          "mt_field": "25D::PROC",
+          "line": 30,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtCmpltnsSts",
+          "value": "COMP",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "25D::PROC",
+          "line": 30,
+          "xml_path": "NtfctnGnlInf/PrcgSts/Cd/EvtConfSts",
+          "value": "CONF",
+          "status": "mapped"
+        },
+        {
           "mt_field": "20C::CORP",
-          "line": 27,
+          "line": 28,
           "xml_path": "CorpActnGnlInf/CorpActnEvtId",
           "value": "SYNCA2026PRD02",
           "status": "mapped"
         },
         {
-          "mt_field": "23G",
-          "line": 28,
-          "xml_path": "NtfctnGnlInf/NtfctnTp/Cd",
-          "value": "NEWM",
-          "status": "partial"
-        },
-        {
           "mt_field": "22F::CAEV",
-          "line": 29,
-          "xml_path": "CorpActnGnlInf/CorpActnEvtTp/Cd",
+          "line": 31,
+          "xml_path": "CorpActnGnlInf/EvtTp/Cd",
           "value": "PRED",
           "status": "mapped"
         },
         {
           "mt_field": "22F::CAMV",
-          "line": 30,
+          "line": 32,
           "xml_path": "CorpActnGnlInf/MndtryVlntryEvtTp/Cd",
           "value": "MAND",
           "status": "mapped"
         },
         {
+          "mt_field": "35B",
+          "line": 37,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/ISIN",
+          "value": "XX4567890124",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "35B",
+          "line": 37,
+          "xml_path": "CorpActnGnlInf/UndrlygScty/FinInstrmId/Desc",
+          "value": "SYNTHETIC BOND DELTA 2028",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "97A::SAFE",
+          "line": 44,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/SfkpgAcct",
+          "value": "SYNACC000790",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 45,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/ShrtLngPos",
+          "value": "LONG",
+          "status": "mapped"
+        },
+        {
+          "mt_field": "93B::ELIG",
+          "line": 45,
+          "xml_path": "AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/FaceAmt",
+          "value": "50000",
+          "status": "mapped"
+        },
+        {
           "mt_field": "98A::ANOU",
-          "line": 31,
-          "xml_path": "CorpActnDtls/Dt/AnncmntDt",
+          "line": 33,
+          "xml_path": "CorpActnDtls/DtDtls/AnncmntDt/Dt/Dt",
           "value": "2026-09-15",
           "status": "mapped"
         },
         {
           "mt_field": "98A::PAYD",
-          "line": 32,
-          "xml_path": "CorpActnDtls/Dt/PmtDt",
+          "line": 34,
+          "xml_path": "CorpActnDtls/DtDtls/PmtDt/Dt",
           "value": "2026-11-01",
           "status": "mapped"
-        },
-        {
-          "mt_field": "35B",
-          "line": 35,
-          "xml_path": "FinInstrmId/ISIN",
-          "value": "XX4567890124",
-          "status": "partial"
-        },
-        {
-          "mt_field": "93B::ELIG",
-          "line": 43,
-          "xml_path": "AcctsListAndBalDtls/Bal/ElgblBal/Qty",
-          "value": "50000",
-          "status": "partial"
-        },
-        {
-          "mt_field": "97A::SAFE",
-          "line": 42,
-          "xml_path": "AcctsListAndBalDtls/SfkpgAcct",
-          "value": "SYNACC000790",
-          "status": "mapped"
-        },
-        {
-          "mt_field": "19A::CASH",
-          "line": 39,
-          "xml_path": "CorpActnDtls/CshPmt/Amt",
-          "value": "25000.00",
-          "status": "partial"
         }
       ],
-      "dropped": [],
+      "dropped": [
+        {
+          "mt_field": "19A::CASH",
+          "line": 41,
+          "value": "USD25000,00",
+          "reason": "no rule in the mapping table (not supported in v1)"
+        }
+      ],
       "warnings": [
-        "20C::SEME (line 26) is only partly mapped: Sender's reference. Whether it maps to the notification identifier, or belongs in the business application header, is unverified.",
-        "23G (line 28) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message. Codes are passed through and must match the ISO code list.",
-        "35B (line 35) is only partly mapped: Only the ISIN is mapped. The security description on the following lines is dropped.",
-        "93B::ELIG (line 43) is only partly mapped: UNIT and FAMT both become one quantity. ISO uses different element types for them, so the distinction is lost.",
-        "19A::CASH (line 39) is only partly mapped: Cash amount with currency in the Ccy attribute. The CshPmt wrapper element is an assumption."
+        "23G (line 29) is only partly mapped: Only NEWM and REPL are supported in v1; any other function rejects the message."
       ],
       "validation_errors": []
     }

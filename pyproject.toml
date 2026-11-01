@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mt564-bridge"
-version = "0.1.0"
+version = "0.2.0"
 description = "Converts SWIFT MT564 corporate action notifications to ISO 20022 seev.031 XML, validates the result against the XSD, and reports what was mapped and what was dropped."
 readme = "README.md"
 requires-python = ">=3.11"

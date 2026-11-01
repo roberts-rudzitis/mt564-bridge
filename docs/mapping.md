@@ -1,4 +1,4 @@
-# MT564 to seev.031 mapping (v1)
+# MT564 to seev.031 mapping (v2)
 
 Target: **seev.031.001.16** (SR2026 release), root element `CorpActnNtfctn`, namespace
 `urn:iso:std:iso:20022:tech:xsd:seev.031.001.16`.
@@ -7,59 +7,58 @@ This table mirrors `mapping/mt564_to_seev031.toml`. A test fails if a rule is mi
 
 ## Verification status
 
-**Every ISO 20022 element path below is an assumption that has not been checked against
-the official XSD.** The build environment could not download the schema. Search results
-showed only fragments of older versions (for example seev.031.001.07 and .08), which
-confirm some element names (`SfkpgAcct`, `AcctsListAndBalDtls`, `Bal`) but not the
-nesting or the element order used in v1. Before relying on the output:
-
-1. Download the official seev.031.001.16 XSD and place it at `schemas/seev.031.001.16.xsd`.
-2. Run `mt564-bridge convert samples/mt564 --out out` without `--no-validate`.
-3. Read each `validation_errors` entry. Each one points at a path or order that needs fixing
-   in `mapping/mt564_to_seev031.toml`.
-
-The MT field meanings and code values are also assumptions. Check them against the current
-SWIFT MT Standards for MT564 and the ISO code lists.
+- **Element paths and order: verified.** Every target path below was checked against the
+  official `seev.031.001.16.xsd` published on iso20022.org (schema generated 26 Feb 2026), and all
+  sample messages pass XSD validation. CI downloads the same schema and runs that check on every push.
+- **Event and processing codes:** the event types used in the samples (DVCA, RHDI, REDM, PRED, TEND)
+  exist in the schema's code list; other codes are checked by XSD validation at run time.
+- **Still assumptions:** the MT564 field meanings and the 25D::PROC code pairs follow my
+  understanding of the standards and common market practice (SMPG). Check them against the
+  current SWIFT MT Standards release and the SMPG market practice before production use.
 
 ## Status legend
 
 - **mapped**: the same concept has a clean equivalent in seev.031.
-- **partial**: an equivalent exists, but with a known gap or an unresolved question. Every use
-  adds a warning to the report.
+- **partial**: an equivalent exists, but with a known gap. Every use adds a warning to the report.
 
 ## Supported fields
 
-| MT field | MT meaning (as I understand it) | ISO 20022 target (assumed path) | Status | Notes |
+| MT field | MT meaning | ISO 20022 target | Status | Notes |
 |---|---|---|---|---|
-| `20C::SEME` | Sender's reference | `NtfctnGnlInf/NtfctnId` | partial | Required. Not verified whether this is the notification identifier or belongs in the business application header. |
-| `20C::CORP` | Corporate action event reference | `CorpActnGnlInf/CorpActnEvtId` | mapped | Reference assigned by the account servicer. |
-| `23G` | Function of the message | `NtfctnGnlInf/NtfctnTp/Cd` | partial | Required. NEWM and REPL only; other functions such as RMDR reject the message. Codes pass through unchanged, so they must match the ISO code list. |
-| `22F::CAEV` | Corporate action event type | `CorpActnGnlInf/CorpActnEvtTp/Cd` | mapped | Required. Passed through as a four-letter code. Whether the code exists is decided by XSD validation. |
-| `22F::CAMV` | Mandatory or voluntary indicator | `CorpActnGnlInf/MndtryVlntryEvtTp/Cd` | mapped | MAND or VOLU in the samples. |
-| `98A::ANOU` | Announcement date | `CorpActnDtls/Dt/AnncmntDt` | mapped | YYYYMMDD becomes YYYY-MM-DD. |
-| `98A::RDTE` | Record date | `CorpActnDtls/Dt/RcrdDt` | mapped | Optional. |
-| `98A::EXDT` | Ex-date | `CorpActnDtls/Dt/ExDvddDt` | partial | `ExDvddDt` is the ex-dividend element. Other event types may need a different element. |
-| `98A::PAYD` | Payment date | `CorpActnDtls/Dt/PmtDt` | mapped | |
-| `35B` | Identification of the financial instrument | `FinInstrmId/ISIN` | partial | Required. Only the ISIN is mapped; the description line is dropped. The ISIN check digit is not verified. |
-| `93B::ELIG` | Eligible balance | `AcctsListAndBalDtls/Bal/ElgblBal/Qty` | partial | UNIT and FAMT both become one quantity. ISO uses different types for them, so the distinction is lost. |
-| `97A::SAFE` | Safekeeping account | `AcctsListAndBalDtls/SfkpgAcct` | mapped | The element name appears in XSD fragments; the parent nesting is unverified. |
-| `92A::GRSS` | Gross rate | `CorpActnDtls/RateDtls/GrssRate` | partial | Whether the rate is a percentage or a per-unit amount depends on the event. |
-| `92A::NETT` | Net rate | `CorpActnDtls/RateDtls/NetRate` | partial | Same basis question as the gross rate. |
-| `19A::CASH` | Cash amount | `CorpActnDtls/CshPmt/Amt` | partial | Currency goes in the `Ccy` attribute. The `CshPmt` wrapper is an assumption. |
+| `20C::SEME` | Sender's reference | `NtfctnGnlInf/NtfctnId` | mapped | Required. In a full ISO exchange it may also go in the business application header. |
+| `23G` | Function of the message | `NtfctnGnlInf/NtfctnTp` | partial | Required. NEWM and REPL only; other functions such as RMDR reject the message. |
+| `25D::PROC` | Processing status | `NtfctnGnlInf/PrcgSts/Cd/EvtCmpltnsSts` | mapped | Required. COMP, COMU → COMP; PREC, PREU → INCO. |
+| `25D::PROC` | Processing status | `NtfctnGnlInf/PrcgSts/Cd/EvtConfSts` | mapped | Required. COMP, PREC → CONF; COMU, PREU → UCON. Other codes (e.g. ENTL) reject the message. |
+| `20C::CORP` | Corporate action event reference | `CorpActnGnlInf/CorpActnEvtId` | mapped | Required by seev.031. |
+| `22F::CAEV` | Corporate action event type | `CorpActnGnlInf/EvtTp/Cd` | mapped | Required. Passed through; XSD validation decides whether the code exists. |
+| `22F::CAMV` | Mandatory / voluntary indicator | `CorpActnGnlInf/MndtryVlntryEvtTp/Cd` | mapped | Required by seev.031 (MAND, CHOS, VOLU). |
+| `35B` | Identification of the financial instrument | `CorpActnGnlInf/UndrlygScty/FinInstrmId/ISIN` | mapped | Required. The ISIN check digit is not verified. |
+| `35B` | Security description lines | `CorpActnGnlInf/UndrlygScty/FinInstrmId/Desc` | mapped | Lines after the ISIN, joined with spaces; max. 140 characters; skipped when absent. |
+| `97A::SAFE` | Safekeeping account | `AcctDtls/AcctsListAndBalDtls/SfkpgAcct` | mapped | Required (seev.031 needs account details). `97C::SAFE//GENR` is not supported. |
+| `93B::ELIG` | Eligible balance – sign | `AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/ShrtLngPos` | mapped | `N` after the slash → SHOR, otherwise LONG. |
+| `93B::ELIG` | Eligible balance – units | `AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/Unit` | mapped | `UNIT/` balances only. |
+| `93B::ELIG` | Eligible balance – face amount | `AcctDtls/AcctsListAndBalDtls/Bal/TtlElgblBal/Bal/QtyChc/SgndQty/Qty/FaceAmt` | mapped | `FAMT/` balances only. |
+| `98A::ANOU` | Announcement date | `CorpActnDtls/DtDtls/AnncmntDt/Dt/Dt` | mapped | YYYYMMDD becomes YYYY-MM-DD. Note the extra `Dt` level for this date type. |
+| `98A::RDTE` | Record date | `CorpActnDtls/DtDtls/RcrdDt/Dt` | mapped | Optional. |
+| `98A::EXDT` | Ex-date | `CorpActnDtls/DtDtls/ExDvddDt/Dt` | partial | `ExDvddDt` is the ex-dividend date; other event types may need a different element. |
+| `98A::PAYD` | Payment date | `CorpActnDtls/DtDtls/PmtDt/Dt` | mapped | |
 
-## Fields not mapped in v1
+## Fields not mapped in v2
 
-These are dropped and listed in each report, with their line numbers:
+These are dropped and listed in each report with their line numbers:
 
-- Option and election details (for example the option or entitlement sequences).
+- **Rates and cash amounts** (for example `92A::GRSS`, `92A::NETT`, `19A::CASH`). In seev.031 they
+  belong to the option details (`CorpActnOptnDtls/CshMvmntDtls/...`), which also require an option
+  number, option type and default-option flag – data that comes from MT564 sequence E. Mapping
+  them without that data would mean inventing values, so they are reported as dropped instead.
+  The `rate` and `amount` transforms are kept for that next step.
+- Option and entitlement sequences (sequence E) in general.
 - Narrative fields.
-- Block 3 (user header) and block 5 (trailer). Block 3 is ignored, so its contents never reach the output.
+- Block 3 (user header) and block 5 (trailer).
 - Any field not in the table above, including any repeated occurrence of a mapped field.
 
-## Known gaps already documented by SWIFT and ISO
+## Version notes
 
-- An ISO change request notes that the documentation deadline date in seev.031 is not aligned
-  with the ISO 15022 implementation. Documentation deadlines are not mapped in v1.
-- An ISO change request for seev.031 renamed the security identification element to
-  `FinancialInstrumentIdentification` in some versions. Element names change between
-  versions, so the pinned version matters.
+- Element names change between seev.031 versions (for example the event type element is `EvtTp`
+  in .001.16, and `NtfctnTp` is a plain code rather than a nested choice), so the pinned version
+  in `bridge.toml` and the XSD must match.

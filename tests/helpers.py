@@ -14,6 +14,8 @@ BASE = [
     ":22F::CAEV//DVCA",
     ":22F::CAMV//MAND",
     ":98A::PAYD//20261105",
+    ":25D::PROC//COMP",
+    ":20C::CORP//SYNCA2026TEST",
     ":16S:GENL",
     ":16R:USECU",
     ":35B:ISIN XX1234567897",

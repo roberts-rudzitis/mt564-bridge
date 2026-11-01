@@ -3,43 +3,65 @@
   <CorpActnNtfctn>
     <NtfctnGnlInf>
       <NtfctnId>SYN564DIV0001</NtfctnId>
-      <NtfctnTp>
-        <Cd>NEWM</Cd>
-      </NtfctnTp>
+      <NtfctnTp>NEWM</NtfctnTp>
+      <PrcgSts>
+        <Cd>
+          <EvtCmpltnsSts>COMP</EvtCmpltnsSts>
+          <EvtConfSts>CONF</EvtConfSts>
+        </Cd>
+      </PrcgSts>
     </NtfctnGnlInf>
     <CorpActnGnlInf>
       <CorpActnEvtId>SYNCA2026DIV01</CorpActnEvtId>
-      <CorpActnEvtTp>
+      <EvtTp>
         <Cd>DVCA</Cd>
-      </CorpActnEvtTp>
+      </EvtTp>
       <MndtryVlntryEvtTp>
         <Cd>MAND</Cd>
       </MndtryVlntryEvtTp>
+      <UndrlygScty>
+        <FinInstrmId>
+          <ISIN>XX1234567897</ISIN>
+          <Desc>SYNTHETIC EQUITY ALPHA</Desc>
+        </FinInstrmId>
+      </UndrlygScty>
     </CorpActnGnlInf>
+    <AcctDtls>
+      <AcctsListAndBalDtls>
+        <SfkpgAcct>SYNACC000123</SfkpgAcct>
+        <Bal>
+          <TtlElgblBal>
+            <Bal>
+              <QtyChc>
+                <SgndQty>
+                  <ShrtLngPos>LONG</ShrtLngPos>
+                  <Qty>
+                    <Unit>2000</Unit>
+                  </Qty>
+                </SgndQty>
+              </QtyChc>
+            </Bal>
+          </TtlElgblBal>
+        </Bal>
+      </AcctsListAndBalDtls>
+    </AcctDtls>
     <CorpActnDtls>
-      <Dt>
-        <AnncmntDt>2026-10-01</AnncmntDt>
-        <RcrdDt>2026-10-14</RcrdDt>
-        <ExDvddDt>2026-10-15</ExDvddDt>
-        <PmtDt>2026-11-05</PmtDt>
-      </Dt>
-      <RateDtls>
-        <GrssRate>0.25</GrssRate>
-      </RateDtls>
-      <CshPmt>
-        <Amt Ccy="EUR">1000.00</Amt>
-      </CshPmt>
+      <DtDtls>
+        <AnncmntDt>
+          <Dt>
+            <Dt>2026-10-01</Dt>
+          </Dt>
+        </AnncmntDt>
+        <RcrdDt>
+          <Dt>2026-10-14</Dt>
+        </RcrdDt>
+        <ExDvddDt>
+          <Dt>2026-10-15</Dt>
+        </ExDvddDt>
+        <PmtDt>
+          <Dt>2026-11-05</Dt>
+        </PmtDt>
+      </DtDtls>
     </CorpActnDtls>
-    <FinInstrmId>
-      <ISIN>XX1234567897</ISIN>
-    </FinInstrmId>
-    <AcctsListAndBalDtls>
-      <Bal>
-        <ElgblBal>
-          <Qty>2000</Qty>
-        </ElgblBal>
-      </Bal>
-      <SfkpgAcct>SYNACC000123</SfkpgAcct>
-    </AcctsListAndBalDtls>
   </CorpActnNtfctn>
 </Document>

@@ -27,7 +27,7 @@ def test_report_is_written_as_json_with_mapped_and_dropped(tmp_path, config):
     assert report["validated"] is False
     message = report["messages"][0]
     assert {"mt_field", "xml_path", "line"} <= set(message["mapped"][0])
-    assert message["dropped"] == []
+    assert [d["mt_field"] for d in message["dropped"]] == ["92A::GRSS", "19A::CASH"]
 
 
 def test_samples_validate_against_official_xsd(tmp_path, config):

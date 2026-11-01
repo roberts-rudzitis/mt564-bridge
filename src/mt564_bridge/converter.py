@@ -51,7 +51,7 @@ def convert_path(input_path: Path, out_dir: Path, config: Config, validate: bool
 
 def convert_file(path: Path, out_dir: Path, config: Config, rules: list[Rule], schema) -> dict:
     report: dict = {
-        "source_file": str(path),
+        "source_file": path.as_posix(),  # forward slashes, so reports look the same on every OS
         "schema_version": config.schema_version,
         "validated": schema is not None,
         "file_error": None,
@@ -106,7 +106,7 @@ def convert_message(
 
     out_file = out_dir / f"{path.stem}_msg{message.index:02d}.seev031.xml"
     out_file.write_bytes(xml_bytes)
-    entry.update(status=status, output_file=str(out_file))
+    entry.update(status=status, output_file=out_file.as_posix())
     return entry
 
 

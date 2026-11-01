@@ -39,14 +39,46 @@ def test_amount_carries_currency_as_attribute():
             TRANSFORMS["amount"](bad)
 
 
-@pytest.mark.parametrize("raw, expected", [("UNIT/2000,", "2000"), ("FAMT/1000,50", "1000.50")])
-def test_quantity_accepts_unit_and_face_amount(raw, expected):
-    assert TRANSFORMS["quantity"](raw).text == expected
+@pytest.mark.parametrize(
+    "raw, units, face",
+    [("UNIT/2000,", "2000", None), ("FAMT/1000,50", None, "1000.50"), ("UNIT/N15,", "15", None)],
+)
+def test_units_and_face_amount_return_none_when_not_applicable(raw, units, face):
+    unit_value, face_value = TRANSFORMS["units"](raw), TRANSFORMS["face_amount"](raw)
+    assert (unit_value.text if unit_value else None) == units
+    assert (face_value.text if face_value else None) == face
+
+
+@pytest.mark.parametrize("raw, expected", [("UNIT/2000,", "LONG"), ("FAMT/N1000,", "SHOR")])
+def test_long_short_reads_the_n_sign(raw, expected):
+    assert TRANSFORMS["long_short"](raw).text == expected
 
 
 def test_quantity_rejects_other_types():
-    with pytest.raises(ValueError):
-        TRANSFORMS["quantity"]("PCS/5")
+    for name in ("units", "face_amount", "long_short"):
+        with pytest.raises(ValueError):
+            TRANSFORMS[name]("PCS/5")
+
+
+@pytest.mark.parametrize(
+    "raw, completeness, confirmation",
+    [("COMP", "COMP", "CONF"), ("COMU", "COMP", "UCON"), ("PREC", "INCO", "CONF"), ("PREU", "INCO", "UCON")],
+)
+def test_processing_status_pairs(raw, completeness, confirmation):
+    assert TRANSFORMS["processing_completeness"](raw).text == completeness
+    assert TRANSFORMS["processing_confirmation"](raw).text == confirmation
+
+
+def test_processing_status_rejects_unknown_codes():
+    with pytest.raises(ValueError, match="not supported"):
+        TRANSFORMS["processing_completeness"]("ENTL")
+
+
+def test_security_description_joins_lines_and_skips_when_absent():
+    assert TRANSFORMS["security_description"]("ISIN XX1234567897\nSYNTHETIC EQUITY\nCLASS A").text == "SYNTHETIC EQUITY CLASS A"
+    assert TRANSFORMS["security_description"]("ISIN XX1234567897") is None
+    with pytest.raises(ValueError, match="140"):
+        TRANSFORMS["security_description"]("ISIN XX1234567897\n" + "X" * 141)
 
 
 def test_code_checks_shape_only():

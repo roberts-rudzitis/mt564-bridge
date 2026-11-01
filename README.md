@@ -1,13 +1,16 @@
 # MT564 to ISO 20022 seev.031 bridge
 
+![tests](https://github.com/roberts-rudzitis/mt564-bridge/actions/workflows/tests.yml/badge.svg)
+
 Converts SWIFT **MT564** corporate action notifications into **ISO 20022 seev.031**
 (`CorporateActionNotification`) XML. Validates the output against the official XSD and
 writes a report that lists every field that was mapped, dropped, or flagged.
 
-> **Status:** the parser, mapping, XML generation, reporting and CLI work and are tested.
-> XSD validation is built in and strict by default, but the official schema could not be
-> downloaded in the build environment, so **the sample XML has not been validated yet**
-> and the ISO element paths are assumptions. See [Verification status](docs/mapping.md#verification-status).
+> **Status (v0.2):** every sample message converts to XML that **passes validation against the
+> official seev.031.001.16 XSD** from iso20022.org. CI downloads the schema and repeats that check
+> on Linux and Windows, Python 3.11–3.13. Option-level data (rates, cash amounts) is reported as
+> dropped rather than guessed – see [Known limitations](#known-limitations) and
+> [the mapping](docs/mapping.md#verification-status).
 
 ## The business problem
 
@@ -37,10 +40,14 @@ For each MT564 in a file:
 Requires Python 3.11 or later.
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 
-# Put the official XSD where bridge.toml points (see schemas/README.md), then:
+# Download the official schema (not committed; see schemas/README.md)
+curl -fsSL -A "Mozilla/5.0" -o schemas/seev.031.001.16.xsd \
+  https://www.iso20022.org/sites/default/files/documents/messages/seev/schemas/seev.031.001.16.xsd
+
 mt564-bridge convert samples/mt564 --out out
 
 # Development only, without a schema:
@@ -55,21 +62,22 @@ Output for each input message: `out/<file>_msgNN.seev031.xml`. One report per in
 
 ## Supported fields
 
-The full table, with the assumed ISO paths and the status of each row, is in
-[docs/mapping.md](docs/mapping.md). In short: sender reference, event reference, function
-of message (NEWM and REPL), event type, mandatory or voluntary indicator, four dates,
-ISIN, eligible quantity, safekeeping account, gross and net rate, and cash amount.
+The full table, with the ISO paths and the status of each row, is in
+[docs/mapping.md](docs/mapping.md). In short: sender reference, function of message (NEWM and
+REPL), processing status, event reference, event type, mandatory or voluntary indicator, ISIN and
+security description, safekeeping account, eligible balance (units or face amount, long or short),
+and four dates.
 
 ## Design decisions
 
-These are the choices I would explain in an interview.
-
 - **The mapping is data, not code.** Every rule is one `[[rule]]` block in a TOML file: source
   field, target path, a named transform, a status, and a note. The Python code contains no
-  field-specific branches. A reviewer can read the table without reading the code.
+  field-specific branches. A reviewer can read the table without reading the code. One MT field
+  can feed several ISO elements (`25D::PROC` becomes both a completeness and a confirmation status).
 - **Unknown is reported, not guessed.** Fields with no rule are listed as dropped, with their
-  line numbers. A partly mapped field such as the ISIN line of `:35B:` is marked `partial`,
-  and every use adds a warning.
+  line numbers. Rates and cash amounts are dropped rather than placed in an option block whose
+  mandatory data (option number, type) the message does not contain. Rules with a known gap are
+  marked `partial`, and every use adds a warning.
 - **No bad files.** Validation runs on the XML before anything is written. A failed message
   leaves a report with the XSD errors and no XML file.
 - **Amounts stay as text.** Amounts and rates are only reformatted, from MT's comma decimal
@@ -98,17 +106,17 @@ These are the choices I would explain in an interview.
 
 ## Known limitations
 
-- **Element paths are assumptions.** None of the ISO paths in the mapping has been verified
-  against the seev.031.001.16 XSD. Some names come from older XSD fragments and some are my
-  best understanding. Validation is the check; expect errors on the first run against the
-  real schema.
-- **Event codes are not verified** against the ISO code list. The samples use DVCA, RHDI,
-  REDM, PRED and TEND.
-- **MT564 field meanings** come from my understanding of the standard and have not been
-  checked against the current SWIFT MT Standards release.
-- **Sequence E** (option and entitlement details) is parsed but not mapped.
+- **Sequence E** (option and entitlement details) is parsed but not mapped, so rates
+  (`92A::GRSS`, `92A::NETT`) and cash amounts (`19A::CASH`) are reported as dropped. In seev.031
+  they belong to `CorpActnOptnDtls`, which needs an option number, option type and default flag.
+- **MT564 field meanings and the 25D::PROC code pairs** follow my understanding of the standard
+  and common market practice; check them against the current SWIFT MT Standards and SMPG
+  guidance before production use. The ISO element paths themselves are verified by validation.
+- **Ex-date** is mapped to `ExDvddDt` (the ex-dividend date); other event types may need a
+  different element.
 - **Function of message** supports NEWM and REPL only. RMDR, and the duplicate and copy
-  sub-functions, are out of scope.
+  sub-functions, are out of scope. **Processing status** supports COMP, COMU, PREC and PREU.
+- **Safekeeping account** must be a specific account (`97A::SAFE`); `97C::SAFE//GENR` is not supported.
 - **Block 3 and block 5** are ignored.
 - **One direction only.** The bridge converts MT564 to seev.031. It does not convert the
   other way and does not handle MT566, MT568 or MT567.
@@ -120,10 +128,10 @@ These are the choices I would explain in an interview.
 pytest
 ```
 
-The suite covers the parser (including malformed input with line numbers), each transform,
-the mapping rules, the XML builder, validation, the pipeline, and the CLI exit codes.
-Coverage is printed after every run. Tests that need the official schema skip with a clear
-message until the XSD is in `schemas/`.
+86 tests cover the parser (including malformed input with line numbers), each transform,
+the mapping rules, the XML builder, validation, the pipeline, and the CLI exit codes, with about
+96% line coverage (printed after every run). One test converts every sample and validates it
+against the official XSD; it skips with a clear message if the XSD is not in `schemas/`.
 
 ## Layout
 
@@ -132,7 +140,7 @@ bridge.toml                  configuration: schema version, XSD path, mapping fi
 mapping/mt564_to_seev031.toml  the declarative mapping table
 docs/mapping.md              the mapping, for review
 samples/mt564/               four synthetic sample files (five messages)
-samples/generated/          XML and reports for the samples, written with --no-validate
+samples/generated/           XML and reports for the samples, validated against the official XSD
 schemas/                     place the official XSD here (not committed)
 src/mt564_bridge/            the package
 tests/                       unit and integration tests, with toy schemas in tests/fixtures
